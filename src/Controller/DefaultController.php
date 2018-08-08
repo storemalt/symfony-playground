@@ -45,4 +45,20 @@ class DefaultController extends Controller
 
         return $this->redirect('create');
     }
+
+    public function listPosts(Request $request): Response
+    {
+        $query = '%'.$request->get('title', '').'%';
+
+        $posts = $this->entityManager->createQueryBuilder()
+            ->select('post')
+            ->from(Post::class, 'post')
+            ->where('post.title like :query')
+            ->setParameter('query', $query)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $this->render('list.html.twig', ['posts' => $posts]);
+    }
 }
