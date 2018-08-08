@@ -5,7 +5,7 @@ $script = <<SCRIPT
 
 sudo phpdismod xdebug; sudo service php7.2-fpm restart #xoff
 cd /srv/www/app/current
-#php composer.phar install
+php composer.phar install
 SCRIPT
 
 # To add a the box, either build it from the daysailer repo, or get it from someone who did, then run:
