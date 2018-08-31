@@ -29,7 +29,7 @@ $ bin/console cache:clear
 #### Homepage
 
 1. Create a new Controller with an index action
-2. Create a route for the index action at the `/` path
+2. Create a route in `routes.yaml` for the index action at the `/` path
 3. Create a new twig template in `templates/`
 4. Make the twig template extend `base.html.twig`
 5. Make the index action render the new template
@@ -95,3 +95,39 @@ $ bin/console cache:clear
     describe post;
     select * from post;
     ```
+
+
+#### Symfony forms
+
+1. Create a `PostType` class in `Form/` that extends `AbstractType`
+2. Implement the `buildForm(FormBuilderInterface $builder, array $options)` function
+3. Add a few fields to the form with `$bulider->add()` that exist in the `Post` entity, eg.
+    ```php
+    $builder->add('title')
+    ```
+4. The second argument to the `add()` function allows you to change the type of the form field that's rendered
+    ```php
+    $builder->add('text', TextareaType::class); 
+    ```
+5. Add a submit button to your form
+    ```php
+    $builder->add('sumbit', SubmitType::class)
+    ```
+6. Create a new Controller action and route for `createPost` (remember to inject the `Request`)
+7. In your controller, create a new `Post`, bind it to the form and handle the requsett
+    ```php
+    $post = new Post();
+    $form = $this->createForm(PostType::class, $post);
+    $form->handleRequest($request)
+    ```
+8. Now create a new twig template 'create-post.html.twig' to render your form, you can render a form with:
+    ```twig
+    {{ form(form) }}
+    ```
+9. If the form hasn't been submitted, you need to render your new twig file
+    ```php
+    if (false === $form->isSubmitted() || false === $form->isValid()) {
+       return $this->>render('create-post.html.twig', ['form' => $form->createView()]);
+    }
+    ```
+10. Now you can load your page and look at the form
